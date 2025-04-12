@@ -45,13 +45,27 @@ enum List[A]:
     case h :: t => t.foldLeft(h)(op)
 
   // Exercise: implement the following methods
-  def zipWithValue[B](value: B): List[(A, B)] = ???
-  def length(): Int = ???
-  def zipWithIndex: List[(A, Int)] = ???
-  def partition(predicate: A => Boolean): (List[A], List[A]) = ???
-  def span(predicate: A => Boolean): (List[A], List[A]) = ???
-  def takeRight(n: Int): List[A] = ???
-  def collect(predicate: PartialFunction[A, A]): List[A] = ???
+  def zipWithValue[B](value: B): List[(A, B)] = map((_, value))
+  def length(): Int = foldLeft(0)((b, _) => b + 1)
+  def zipWithIndex: List[(A, Int)] =
+    foldRight((Nil(), this.length() - 1))((a, b: (List[(A, Int)], Int)) => ((a, b._2) :: b._1, b._2 - 1))._1
+  def partition(predicate: A => Boolean): (List[A], List[A]) = (filter(predicate), filter(!predicate(_)))
+
+  private def foldRightWithStop[B](init: B)(op: (A, B) => B)(predicate: A => Boolean): B = this match
+    case h :: t if predicate(h) => op(h, t.foldRightWithStop(init)(op)(predicate))
+    case _ => init
+
+  def span(predicate: A => Boolean): (List[A], List[A]) =
+    val (firstList, stopIndex) =
+      foldRightWithStop(Nil(), 0)((a, b: (List[A], Int)) => (a :: b._1, b._2 + 1))(predicate)
+    (firstList, takeRight(this.length() - stopIndex))
+
+  def takeRight(n: Int): List[A] =
+    foldRight((Nil(), 0))((a, b: (List[A], Int)) => if b._2 < n then (a :: b._1, b._2 + 1) else b)._1
+
+  def collect[B](predicate: PartialFunction[A, B]): List[B] =
+    foldRight(Nil())((a, b) => if predicate.isDefinedAt(a) then predicate(a) :: b else b)
+
 // Factories
 object List:
 
@@ -67,7 +81,9 @@ object Test extends App:
 
   import List.*
   val reference = List(1, 2, 3, 4)
+  println(reference)
   println(reference.zipWithValue(10)) // List((1, 10), (2, 10), (3, 10), (4, 10))
+  println(reference.length()) // 4
   println(reference.zipWithIndex) // List((1, 0), (2, 1), (3, 2), (4, 3))
   println(reference.partition(_ % 2 == 0)) // (List(2, 4), List(1, 3))
   println(reference.span(_ % 2 != 0)) // (List(1), List(2, 3, 4))
