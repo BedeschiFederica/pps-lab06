@@ -29,6 +29,11 @@ class Ex2Test:
     assertEquals(conferenceReviewing.orderedScores(5, Final), List(10, 10))
 
   @Test def testAverageFinalScore(): Unit =
+    assertEquals(8.5, conferenceReviewing.averageFinalScore(1), 0.01)
+    assertEquals(7.5, conferenceReviewing.averageFinalScore(2), 0.01)
+    assertEquals(3.5, conferenceReviewing.averageFinalScore(3), 0.01)
+    assertEquals(7.0, conferenceReviewing.averageFinalScore(4), 0.01)
+    assertEquals(10.0, conferenceReviewing.averageFinalScore(5), 0.01)
     conferenceReviewing.loadReview(10, 8, 8, 6, 8)
     assertEquals(8.0, conferenceReviewing.averageFinalScore(10), 0.01)
     conferenceReviewing.loadReview(10, 9, 9, 6, 9)
