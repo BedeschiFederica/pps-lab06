@@ -26,7 +26,8 @@ object ConferenceReviewing:
       reviews = reviews :+ (article, Map(Relevance -> relevance, Significance -> significance,
         Confidence -> confidence, Final -> fin))
 
-    override def orderedScores(article: Int, question: Question): Seq[Int] = ???
+    override def orderedScores(article: Int, question: Question): Seq[Int] =
+      reviews.filter(_._1 == article).map(_._2(question)).sorted
 
     override def averageFinalScore(article: Int): Double =
       reviews.filter(_._1 == article).map(_._2(Final)).sum.toDouble / reviews.count(_._1 == article)
