@@ -40,3 +40,6 @@ class Ex2Test:
     assertEquals(8.5, conferenceReviewing.averageFinalScore(10), 0.01)
     conferenceReviewing.loadReview(10, someScores)
     assertEquals(8.33, conferenceReviewing.averageFinalScore(10), 0.01)
+
+  @Test def testAcceptedArticles(): Unit =
+    assertEquals(Set(1, 2, 4), conferenceReviewing.acceptedArticles)

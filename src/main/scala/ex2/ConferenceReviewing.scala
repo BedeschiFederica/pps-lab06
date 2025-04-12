@@ -32,6 +32,10 @@ object ConferenceReviewing:
     override def averageFinalScore(article: Int): Double =
       reviews.filter(_._1 == article).map(_._2(Final)).sum.toDouble / reviews.count(_._1 == article)
 
-    override def acceptedArticles: Set[Int] = ???
+    override def acceptedArticles: Set[Int] =
+      reviews.map(_._1).distinct
+        .filter(a => averageFinalScore(a) > 5.0 && reviews.filter(_._1 == a).map(_._2(Relevance)).exists(_ >= 8.0))
+        .toSet
+
     override def sortedAcceptedArticles: Seq[(Int, Double)] = ???
     override def averageWeightedFinalScoreMap: Map[Int, Double] = ???
