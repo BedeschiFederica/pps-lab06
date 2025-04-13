@@ -24,9 +24,9 @@ class Ex2Test:
     conferenceReviewing.loadReview(5, 7, 7, 7, 10); // 7.0
 
   @Test def testOrderedScores(): Unit =
-    assertEquals(conferenceReviewing.orderedScores(2, Relevance), List(4, 9))
-    assertEquals(conferenceReviewing.orderedScores(4, Confidence), List(6, 7, 8))
-    assertEquals(conferenceReviewing.orderedScores(5, Final), List(10, 10))
+    assertEquals(List(4, 9), conferenceReviewing.orderedScores(2, Relevance))
+    assertEquals(List(6, 7, 8), conferenceReviewing.orderedScores(4, Confidence))
+    assertEquals(List(10, 10), conferenceReviewing.orderedScores(5, Final))
 
   @Test def testAverageFinalScore(): Unit =
     assertEquals(8.5, conferenceReviewing.averageFinalScore(1), 0.01)
@@ -48,9 +48,9 @@ class Ex2Test:
     assertEquals(List((4, 7.0), (2, 7.5), (1, 8.5)), conferenceReviewing.sortedAcceptedArticles)
 
   @Test def testAverageWeightedFinalScore(): Unit =
-    assertEquals(conferenceReviewing.averageWeightedFinalScoreMap(1), (4.8 + 5.4) / 2, 0.01)
-    assertEquals(conferenceReviewing.averageWeightedFinalScoreMap(2), (9.0 + 6.0) / 2, 0.01)
-    assertEquals(conferenceReviewing.averageWeightedFinalScoreMap(3), (0.9 + 1.6) / 2, 0.01)
-    assertEquals(conferenceReviewing.averageWeightedFinalScoreMap(4), (3.6 + 5.6 + 5.6) / 3, 0.01)
-    assertEquals(conferenceReviewing.averageWeightedFinalScoreMap(5), (6.0 + 7.0) / 2, 0.01)
-    assertEquals(conferenceReviewing.averageWeightedFinalScoreMap.size, 5)
+    assertEquals(5, conferenceReviewing.averageWeightedFinalScoreMap.size)
+    assertEquals((4.8 + 5.4) / 2, conferenceReviewing.averageWeightedFinalScoreMap(1), 0.01)
+    assertEquals((9.0 + 6.0) / 2, conferenceReviewing.averageWeightedFinalScoreMap(2), 0.01)
+    assertEquals((0.9 + 1.6) / 2, conferenceReviewing.averageWeightedFinalScoreMap(3), 0.01)
+    assertEquals((3.6 + 5.6 + 5.6) / 3, conferenceReviewing.averageWeightedFinalScoreMap(4), 0.01)
+    assertEquals((6.0 + 7.0) / 2, conferenceReviewing.averageWeightedFinalScoreMap(5), 0.01)
