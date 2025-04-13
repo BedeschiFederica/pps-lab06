@@ -40,5 +40,8 @@ object ConferenceReviewing:
     override def sortedAcceptedArticles: Seq[(Int, Double)] =
       acceptedArticles.map(a => (a, averageFinalScore(a))).toSeq.sortBy(_._2)
 
-    override def averageWeightedFinalScoreMap: Map[Int, Double] = ???
-    // article -> average value = CONFIDENCE*FINAL/10
+    override def averageWeightedFinalScoreMap: Map[Int, Double] =
+      reviews.map(_._1).distinct
+        .map(a => (a,
+          reviews.filter(_._1 == a).map(ar => ar._2(Final) * ar._2(Confidence) / 10.0).sum / reviews.count(_._1 == a)))
+        .toMap
