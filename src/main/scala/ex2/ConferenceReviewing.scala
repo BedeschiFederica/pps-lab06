@@ -37,5 +37,8 @@ object ConferenceReviewing:
         .filter(a => averageFinalScore(a) > 5.0 && reviews.filter(_._1 == a).map(_._2(Relevance)).exists(_ >= 8.0))
         .toSet
 
-    override def sortedAcceptedArticles: Seq[(Int, Double)] = ???
+    override def sortedAcceptedArticles: Seq[(Int, Double)] =
+      acceptedArticles.map(a => (a, averageFinalScore(a))).toSeq.sortBy(_._2)
+
     override def averageWeightedFinalScoreMap: Map[Int, Double] = ???
+    // article -> average value = CONFIDENCE*FINAL/10

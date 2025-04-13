@@ -43,3 +43,6 @@ class Ex2Test:
 
   @Test def testAcceptedArticles(): Unit =
     assertEquals(Set(1, 2, 4), conferenceReviewing.acceptedArticles)
+
+  @Test def testSortedAcceptedArticles(): Unit =
+    assertEquals(List((4, 7.0), (2, 7.5), (1, 8.5)), conferenceReviewing.sortedAcceptedArticles)
